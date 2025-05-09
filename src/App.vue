@@ -1,5 +1,11 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import { ref } from 'vue'
+
+const kegiatan = ref([
+  'Belajar Vue 3',
+  'Mengerjakan UTS',
+  'Push project ke GitHub'
+])
 </script>
 
 <template>
@@ -11,7 +17,13 @@ import HelloWorld from './components/HelloWorld.vue'
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+
+  <h2>Daftar Kegiatan:</h2>
+  <ul>
+    <li v-for="(item, index) in kegiatan" :key="index">
+      {{ item }}
+    </li>
+  </ul>
 </template>
 
 <style scoped>
