@@ -8,7 +8,7 @@ const kegiatan = ref([ ])
 const kegiatanBaru = ref('')
 
 // Data untuk memilih filter
-const filterSelesai = ref(false)  // false berarti belum selesai, true berarti sudah selesai
+const filterSelesai = ref(null)  // null berarti menampilkan semua, false untuk belum selesai, true untuk selesai
 
 // Fungsi untuk menambahkan kegiatan
 const tambahKegiatan = () => {
@@ -33,6 +33,10 @@ const toggleSelesai = (index) => {
 
 // Fungsi untuk menyaring kegiatan berdasarkan status selesai
 const filterKegiatan = () => {
+  // Menampilkan semua jika filterSelesai bernilai null
+  if (filterSelesai.value === null) {
+    return kegiatan.value
+  }
   return kegiatan.value.filter(item => item.selesai === filterSelesai.value)
 }
 </script>
@@ -71,41 +75,64 @@ const filterKegiatan = () => {
 </template>
 
 <style scoped>
-.todolist-container {
+/* Background image */
+body {
+  background-image: url('https://source.unsplash.com/random/1600x900'); /* Gambar latar belakang acak */
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  margin: 0;
   font-family: 'Arial', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-attachment: fixed;
+}
+
+/* Container untuk Todo List */
+.todolist-container {
   margin: 0 auto;
   max-width: 600px;
-  padding: 20px;
-  background-color: #f4f7fb;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background agar konten tetap terbaca */
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(10px); /* Efek blur untuk latar belakang */
 }
 
+/* Judul */
 h2 {
   text-align: center;
-  color: #333;
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 20px;
 }
 
+/* Input dan Button */
 .input-container {
   display: flex;
-  margin-bottom: 20px;
   justify-content: center;
+  margin-bottom: 20px;
 }
 
 .input {
-  padding: 0.5em;
-  margin-right: 0.5em;
+  padding: 0.8em;
+  margin-right: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 8px;
   width: 60%;
+  font-size: 1rem;
 }
 
 .btn {
-  padding: 0.5em 1em;
-  border-radius: 5px;
+  padding: 0.8em 1.5em;
+  border-radius: 8px;
   color: white;
   border: none;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .btn:hover {
@@ -121,14 +148,40 @@ h2 {
 }
 
 .hapus {
-  background-color: red;
+  background-color: #ff4d4d;
   margin-left: 10px;
 }
 
 .hapus:hover {
-  background-color: #ff4d4d;
+  background-color: #e44d4d;
 }
 
+/* Filter Button */
+.filter-container {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.filter-btn {
+  padding: 0.6em 1.2em;
+  background-color: #42b883;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 0 8px;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+  background-color: #369870;
+}
+
+.filter-btn.active {
+  background-color: #369870;
+}
+
+/* Daftar kegiatan */
 .kegiatan-list {
   list-style-type: none;
   padding: 0;
@@ -140,18 +193,24 @@ h2 {
   justify-content: space-between;
   background-color: #ffffff;
   margin: 10px 0;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.kegiatan-list li:hover {
+  background-color: #f7f7f7;
 }
 
 .kegiatan-list li.selesai {
-  background-color: #e6f7e5; /* Tampilkan dengan latar belakang hijau muda ketika selesai */
+  background-color: #e6f7e5; /* Hijau muda saat selesai */
 }
 
 .checkbox {
-  margin-right: 10px;
-  transform: scale(1.2);
+  margin-right: 15px;
+  transform: scale(1.5);
+  transition: all 0.3s ease;
 }
 
 .strikethrough {
@@ -159,36 +218,18 @@ h2 {
   color: #888;
 }
 
-.filter-container {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.filter-btn {
-  padding: 0.5em 1em;
-  background-color: #42b883;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 0 10px;
-}
-
-.filter-btn:hover {
-  background-color: #369870;
-}
-
-.filter-btn.active {
-  background-color: #369870;
-}
-
+/* Responsif untuk perangkat kecil */
 @media (max-width: 600px) {
   .input {
-    width: 80%;
+    width: 75%;
   }
 
   .btn {
     width: 100%;
+  }
+
+  .filter-btn {
+    padding: 0.5em 1em;
   }
 }
 </style>
