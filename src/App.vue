@@ -3,9 +3,7 @@ import { ref } from 'vue'
 
 // Data untuk menyimpan daftar kegiatan
 const kegiatan = ref([
-  'Belajar Vue 3',
-  'Mengerjakan UTS',
-  'Push project ke GitHub'
+
 ])
 
 // Data untuk menyimpan input dari user
@@ -18,6 +16,12 @@ const tambahKegiatan = () => {
     kegiatanBaru.value = ''
     console.log(kegiatan.value) // Menampilkan daftar kegiatan di konsol
   }
+}
+
+// Fungsi untuk menghapus kegiatan berdasarkan index
+const hapusKegiatan = (index) => {
+  kegiatan.value.splice(index, 1)
+  console.log(kegiatan.value) // Menampilkan daftar kegiatan setelah dihapus
 }
 </script>
 
@@ -37,6 +41,10 @@ const tambahKegiatan = () => {
     <ul>
       <li v-for="(item, index) in kegiatan" :key="index">
         {{ item }}
+        <!-- Tombol Hapus -->
+        <button @click="hapusKegiatan(index)" style="margin-left: 10px; background-color: red;">
+          Hapus
+        </button>
       </li>
     </ul>
   </div>
@@ -61,5 +69,14 @@ button {
 
 button:hover {
   background-color: #369870;
+}
+
+button[style="background-color: red;"] {
+  background-color: red;
+  color: white;
+}
+
+button[style="background-color: red;"]:hover {
+  background-color: #ff4d4d;
 }
 </style>
