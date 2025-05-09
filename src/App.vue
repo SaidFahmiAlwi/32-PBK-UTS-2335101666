@@ -48,7 +48,7 @@ const toggleSelesai = (index) => {
     <ul class="kegiatan-list">
       <li v-for="(item, index) in kegiatan" :key="index" :class="{ selesai: item.selesai }">
         <input type="checkbox" :checked="item.selesai" @click="toggleSelesai(index)" class="checkbox" />
-        {{ item.text }}
+        <span :class="{ 'strikethrough': item.selesai }">{{ item.text }}</span>
         <button @click="hapusKegiatan(index)" class="btn hapus">Hapus</button>
       </li>
     </ul>
@@ -131,13 +131,17 @@ h2 {
 }
 
 .kegiatan-list li.selesai {
-  text-decoration: line-through;
-  color: #888;
+  background-color: #e6f7e5; /* Tampilkan dengan latar belakang hijau muda ketika selesai */
 }
 
 .checkbox {
   margin-right: 10px;
   transform: scale(1.2);
+}
+
+.strikethrough {
+  text-decoration: line-through;
+  color: #888;
 }
 
 @media (max-width: 600px) {
