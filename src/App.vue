@@ -7,6 +7,9 @@ const kegiatan = ref([ ])
 // Data untuk menyimpan input dari user
 const kegiatanBaru = ref('')
 
+// Data untuk memilih filter
+const filterSelesai = ref(false)  // false berarti belum selesai, true berarti sudah selesai
+
 // Fungsi untuk menambahkan kegiatan
 const tambahKegiatan = () => {
   if (kegiatanBaru.value.trim() !== '') {
@@ -27,6 +30,11 @@ const toggleSelesai = (index) => {
   kegiatan.value[index].selesai = !kegiatan.value[index].selesai
   console.log(kegiatan.value) // Menampilkan daftar kegiatan yang diperbarui
 }
+
+// Fungsi untuk menyaring kegiatan berdasarkan status selesai
+const filterKegiatan = () => {
+  return kegiatan.value.filter(item => item.selesai === filterSelesai.value)
+}
 </script>
 
 <template>
@@ -44,9 +52,16 @@ const toggleSelesai = (index) => {
       <button @click="tambahKegiatan" class="btn tambah">Tambah</button>
     </div>
 
+    <!-- Filter untuk memilih hanya kegiatan yang belum selesai -->
+    <div class="filter-container">
+      <button @click="filterSelesai = false" :class="{ active: filterSelesai === false }" class="filter-btn">Belum Selesai</button>
+      <button @click="filterSelesai = true" :class="{ active: filterSelesai === true }" class="filter-btn">Selesai</button>
+      <button @click="filterSelesai = null" :class="{ active: filterSelesai === null }" class="filter-btn">Tampilkan Semua</button>
+    </div>
+
     <!-- Daftar kegiatan -->
     <ul class="kegiatan-list">
-      <li v-for="(item, index) in kegiatan" :key="index" :class="{ selesai: item.selesai }">
+      <li v-for="(item, index) in filterKegiatan()" :key="index" :class="{ selesai: item.selesai }">
         <input type="checkbox" :checked="item.selesai" @click="toggleSelesai(index)" class="checkbox" />
         <span :class="{ 'strikethrough': item.selesai }">{{ item.text }}</span>
         <button @click="hapusKegiatan(index)" class="btn hapus">Hapus</button>
@@ -142,6 +157,29 @@ h2 {
 .strikethrough {
   text-decoration: line-through;
   color: #888;
+}
+
+.filter-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.filter-btn {
+  padding: 0.5em 1em;
+  background-color: #42b883;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 10px;
+}
+
+.filter-btn:hover {
+  background-color: #369870;
+}
+
+.filter-btn.active {
+  background-color: #369870;
 }
 
 @media (max-width: 600px) {
